@@ -1,7 +1,5 @@
 # `grep` 
 
-Here’s a layman description of the commands found in your `commands_history.txt` file:
-
 1. **`cat taste.txt`**: This command displays the entire content of the `taste.txt` file on the screen.
 
 2. **`grep "cake" taste.txt`**: Searches for the word "cake" in the `taste.txt` file and shows any lines containing that word.
@@ -76,9 +74,9 @@ Here’s a layman description of the commands found in your `commands_history.tx
 
 37. **`egrep "ba+g" repeat.txt`**: Searches for "b", followed by **one or more** "a"s, and ending with "g".
 
-38. **`egrep "ba{3}g" repeat.txt`**: Searches for "b", followed by exactly **three "a"**s, and ending with "g" (matches "baaag").
+38. **`egrep "ba{3}g" repeat.txt`**: Searches for "b", followed by exactly **three** "a"s, and ending with "g" (matches "baaag").
 
-39. **`egrep "ba{4}g" repeat.txt`**: Searches for "b", followed by exactly **four "a"**s, and ending with "g" (matches "baaaag").
+39. **`egrep "ba{4}g" repeat.txt`**: Searches for "b", followed by exactly **four** "a"s, and ending with "g" (matches "baaaag").
 
 40. **`egrep "ba{3,5}g" repeat.txt`**: Searches for "b", followed by between **three and five** "a"s, and ending with "g" (matches "baaag", "baaaag", and "baaaaag").
 
@@ -98,13 +96,13 @@ Here’s a layman description of the commands found in your `commands_history.tx
 
 48. **`egrep "b[aa]{2}g" repeat.txt`**: Similar to the above, searches for "b", followed by exactly two occurrences of either one "a" or two "a"s.
 
-49. **`egrep "(good|cake)" taste.txt**: Searches for either the word "good" or "cake" in `taste.txt`.
+49. **`egrep "(good|cake)" taste.txt`**: Searches for either the word "good" or "cake" in `taste.txt`.
 
 50. **`egrep "good|cake" taste.txt`**: Same as above, searches for either "good" or "cake".
 
 51. **`grep "is" *`**: Searches for "is" in all files in the current directory.
 
-52. **`grep "is" ~/aug2024/ditiss/*`**: Searches for "is" in all files located in the `~/aug2024/ditiss/` directory.
+52. **`grep "something" ~/in/my/dir*`**: Searches for "something" in all files located in the `~/in/my/dir` directory.
 
 53. **`grep -r "is" .`**: Recursively searches for "is" in the current directory and all its subdirectories.
 
@@ -113,3 +111,44 @@ Here’s a layman description of the commands found in your `commands_history.tx
 55. **`grep -C 2 "search-pattern" file.txt`**: Displays the two line before and after the line that find the searched *pattern*. 
 
 56. **`grep -A 2 -B 2 "search-pattern" file.txt`**: Displays the same thing, but here you can specifically specify the number for both after and before.
+
+57. **`grep -ir Error /var/log`**: Displays the error messages within the `/var/log` directory recursively searching through every file within the directory. 
+
+### Character Classes
+
+**`[a-zA-Z0-9]`**: Matching any lowercase, uppercase, and numeric expression such as `bgh8FG`, `hgnvUV`, `hgbHsx` kind of expressions.
+
+### Wildcards 
+
+1. **`.`**: Matches any character except new line. 
+
+2. **`?`**: Matches preceding pattern zero or one time. It is used to make the preceding character optional. 
+
+3. **`*`**: Matches zero or more character. 
+
+4. **`+`**: Matches one or more characters.
+
+The key difference between `+` and `*` is that `+` quantifier needs atleast one match, but the `*` quantifier doesn't need it, it will match if the preceding character is not matched. For example, `grep "a*"` the expression will give atleast single `a` but with `grep "a+"` it will give only those lines which have atleast one **a**, but `a*` will match if there are no **a**.
+
+### Positions
+
+1. **`^`**: Represents beginning of the line.
+
+2. **`$`**: Represent end of line. 
+
+# Comman Mistakes
+
+When using `grep` or `egrep` we often tend to make few mistakes which affects the result we are looking for. Lets understand using scenarios and prevent small mistakes that could take place. 
+
+Never use `grep .txt /var/log` won't help you because the expression `.` means *any character*, therefore it would lead to wrong results.
+
+Confusion between `grep` and `egrep` could lead to another possible errors, if you did something like `grep -i "(error|warning)" /var/log`, which is wrong. The `grep`  doesn't support `|` **OR** operator without option `-E`. 
+
+Always use `*` or `+` with precedence like `.*` or `a*` which means matching any line (*`.*`*) becuase `*` matches zero or more of the previous character, but there’s no *previous character* here. 
+
+Prevent using something like `[A-z]` because this doesn't mean anything. And also when using `-` as an legit expression to match, don't use it inside square bracket in between like this, `[.-\]`, meaning if you intend to match for either `.`, `-`, or `\`. The right one will be to use `[-.\]` otherwise it makes the grep think on *range* from `.` to `\` which is pointless. 
+
+Don't forget to anchor with `^` or `$` for start/end of line, if you want to search for `root` user in `/etc/passwd` file, don't do `grep "root" /etc/passwd`, but do `grep "^root:" /etc/passwd`.
+
+Using **word boundary** are important, suppose you need to search for *art* in a text file, don't do `grep "art" file.txt`, instead do `grep "\bart\b" file.txt`
+

@@ -260,3 +260,8 @@ vim <(ls /path/)
 ```
 
 This will open up contents of the **/path/** (it could be anything like /bin/, want to see the package within the bin).
+
+# Enabling Word Wrapping
+
+Use the `:set wrap` command to wrap up the words, texts, and paragraphs inside vim editor. 
+

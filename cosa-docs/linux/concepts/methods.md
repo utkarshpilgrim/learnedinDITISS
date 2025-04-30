@@ -140,6 +140,55 @@ sudo hostnamectl set-hostname server
 
 It might have occured that sometimes you are not able to work through **ssh**, thus you are not able to make a remote connection to the remote machine. In that case, you need to remove the file called **known_hosts**, this will restart the ssh and will make the fresh start for **ssh**. Move to directory named **~/.ssh** and remove the **known_hosts**.
 
+# Creating Random Automated files
 
+Use the following command in bash to generate random file names.
+
+```bash
+for i in {1..10}; do name=$(cat /dev/urandom | tr -dc 'a-zA-Z' | head -c 6); echo "File: $name" > "$name.txt" ; done
+```
+
+The command is taking output from the `/dev/urandom` and using translation cmd such as `tr -dc 'a-zA-Z'` which would translate the characters. 
+
+```bash
+cat /dev/urandom | tr -dc 'a-zA-Z' | head -c 10; echo
+```
+
+Some more practising. 
+
+```bash
+for i in {1..4}; do two=$(cat /dev/urandom | tr -dc 'a-zA-z' | head -c 2); three=$(cat /dev/urandom | tr -dc 'a-zA-Z' | head -c 3); echo "File: $two$three" > f"${two}bug${three}".txt; done
+```
+
+# To resize to 50% of the original size
+
+`-Z` 800 keeps aspect ratio and resizes the longest edge to 800 px
+
+```bash
+sips -Z 800 image.png
+```
+
+Output will overwrite the original, unless you copy first
+
+# About Process
+
+Use the `echo $$` command to know what currentl process you are using. 
+
+# Randomly Pick values from a file
+
+If you want to randomly pick one line (value) from a file in Linux (Fedora or any Linux), here’s the classic command:
+
+```bash
+shuf -n 1 filename
+```
+
+# `realpath` Utility
+
+Use the below command to get the absolute path of the target file. 
+
+
+```bash
+realpath filename
+```
 
 
