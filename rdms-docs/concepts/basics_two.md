@@ -1,4 +1,4 @@
-# Session 2
+# 
 
 Let's explore these fundamental MySQL concepts with practical examples. We'll use a simple database scenario with two tables: `Customers` and `Orders`.
 

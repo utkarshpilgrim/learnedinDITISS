@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: apache2
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      type: apache2
+  template :
+    metadata:
+      labels:
+        type: apache2
+    spec:
+      containers:
+        - name: container1
+          image: utkarshpratapsingh/apache2_web:latest
+          ports:
+            - containerPort: 80
+              protocol: TCP

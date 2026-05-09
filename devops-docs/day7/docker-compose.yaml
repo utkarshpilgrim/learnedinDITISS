@@ -1,0 +1,14 @@
+services:
+  catalog-service:
+    build: ./catalog-service/
+    ports:
+      - 4000:4000
+  
+  user-service:
+    build: ./user-service/
+    ports:
+      - 4001:4000
+  
+  db-service:
+    build: ./db-service/
+    

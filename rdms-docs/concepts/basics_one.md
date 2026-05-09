@@ -1,6 +1,4 @@
-# Session 1
-
-Let's break down these MySQL concepts.
+# MySQL concepts.
 
 **1. Best Practices for Organizing and Naming Databases:**
 

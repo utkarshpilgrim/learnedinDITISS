@@ -11,7 +11,7 @@
 **Heads**, **Tracks**, and **Cylinders**
 
 <div style="border-left: 4px solid #007acc; background-color: #f1f6f9; padding: 10px; border-radius: 5px;">
-<strong>Note*</strong> Today too companies uses the Hard drives in order to acieve a better an more safe data recovery, as SSDs are not the eady when it comes to recovering data, meaning when it comes to SSDs, SSDs have a challenge of overwritten data, meaing it is possible, if not recovered immediately, the deleted 
+<strong>Note*</strong> Today too companies uses the Hard drives in order to acieve a better an more safe data recovery, as SSDs are not the ready when it comes to recovering data, meaning SSDs have a challenge of overwritten data, it is possible if not recovered immediately, the data is deleted or overwritten. 
 </div>
 <br>
 

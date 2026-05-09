@@ -1,6 +1,6 @@
 # LDAP
 
-LDAP is a way of creating multiple users within the global directory that can be accesses amoung multiple server using LDAP, becuase it has its own database and therfore, it is similar to that of the Domain Controller. This is done using the **Open LDAP**.
+At its core, LDAP deals with directories. A directory is a hierarchical structure that organizes information about objects. The directory in LDAP is organized as a tree, called the Directory Information Tree (DIT). This hierarchical structure provides a logical way to group and manage objects. For example, you might have a top-level entry for your organization, then entries for departments, and finally entries for individual users within each department.
 
 It is standard **protocol** that is designed to maintain the multiple services, used for sharing the entities. Mainly users and group. 
 

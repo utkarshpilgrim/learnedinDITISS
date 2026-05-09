@@ -110,7 +110,7 @@ Remember to install the source code of the Nagios from the local server. **Downl
 8. **Installation of Apache Server**. Make sure that you've created the file insdie the /etc/apache2/site-enabled/ folder.
 
     ```
-    ./configure --with-httpd-conf=/etc/apache2/site-enabled
+    ./configure --with-httpd-conf=/etc/apache2/sites-enabled/
     ```
 9. **Compile**. Run the following command to start the installation.
 

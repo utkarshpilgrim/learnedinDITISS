@@ -62,7 +62,7 @@ B(config-if)# tunnel destination 80.1.1.1
 B(config-if)# no
 ```
 
-### IPSec 
+# IPSec 
 
 There are two typese of IP security, one is Tunnel Mode and Transport Mode. When your packet is going through the internet, the packet is basically encrypted with payload. It basically tries to protect the src and dest IP address. 
 
@@ -71,9 +71,53 @@ There are two typese of IP security, one is Tunnel Mode and Transport Mode. When
 
 Tunnel Mode also hides the data, as there is IP header within the IP header so it is impossible to know whether this is tunneling or the Regular IP header.
  
-- **Internet Key Exhange**
-- **Pre Shared Key**
+Let's delve deeper into Internet Key Exchange (IKE) and Pre-Shared Keys (PSKs) within the context of IPsec.
+
+**Internet Key Exchange (IKE)**
+
+IKE is the framework used by IPsec to establish a secure channel for negotiating and managing Security Associations (SAs).  Think of SAs as the blueprints for the secure connection.  They define parameters like encryption algorithms, authentication methods, and key lifetimes.  IKE automates the process of creating and managing these SAs, eliminating the need for manual configuration.
+
+IKE operates in two phases:
+
+* **Phase 1 (IKE SA establishment):** This phase establishes a secure channel between the two communicating parties. It negotiates the parameters for this secure channel, including:
+    * **Encryption Algorithm:**  e.g., AES, 3DES
+    * **Hash Algorithm:** e.g., SHA-256, MD5
+    * **Authentication Method:**  This is where PSKs or digital certificates come into play (more on this below).
+    * **Diffie-Hellman (DH) Group:** Used for secure key exchange without actually transmitting the key itself.
+
+* **Phase 2 (IPsec SA establishment):** Once the secure channel is established in Phase 1, Phase 2 negotiates the parameters for the actual IPsec connection used to protect data traffic. This includes:
+    * **IPsec Protocol:**  ESP (Encapsulating Security Payload) or AH (Authentication Header)
+    * **Encryption Algorithm:**  e.g., AES, 3DES
+    * **Hash Algorithm:** e.g., SHA-256, MD5
+    * **Security Parameter Index (SPI):** A unique identifier for each SA.
+
+**IKE versions:**  IKEv1 and IKEv2 exist. IKEv2 is generally preferred as it's simpler, more efficient, and supports mobility better.
+
+**Pre-Shared Key (PSK)**
+
+A PSK is a secret key that is shared between the two communicating parties *before* the connection is established.  It's like a password.  In the context of IPsec and IKE, the PSK is used during Phase 1 authentication.  Both sides use the same PSK to prove their identity and derive the encryption keys for the IKE SA.
+
+**PSK Advantages:**
+
+* **Simplicity:**  Easy to configure and implement, especially for smaller networks or site-to-site VPNs.
+
+**PSK Disadvantages:**
+
+* **Scalability:** Managing PSKs becomes difficult in larger networks.  Distributing and updating them securely can be challenging.
+* **Security:**  If the PSK is compromised, the entire security of the connection is compromised.
+
+**PSK vs. Digital Certificates**
+
+While PSKs offer simplicity, digital certificates are generally considered more secure, especially for larger and more complex networks.  Certificates provide stronger authentication because they rely on a trusted third party (Certificate Authority) to verify the identity of each communicating party.  They also offer better scalability as they eliminate the need for pre-sharing secret keys.
+
+**How IKE and PSK work together:**
+
+1. **Initiation:** One device initiates the IKE process.
+2. **Phase 1 Negotiation:** Both devices exchange proposals for IKE SA parameters, including the authentication method (PSK in this case).
+3. **PSK Authentication:** Both devices use the pre-shared key to authenticate each other.  They don't actually exchange the PSK itself, but rather use it to generate unique cryptographic values that prove they both know the secret.
+4. **IKE SA Establishment:** Once authenticated, the IKE SA is established, creating a secure channel.
+5. **Phase 2 Negotiation:**  The devices negotiate the IPsec SA parameters.
+6. **IPsec SA Establishment:**  The IPsec SA is established, and secure data transfer can begin.
 
 
-
-
+**In summary:** IKE provides the framework for establishing secure connections, while PSKs provide a simple method for authentication within that framework. While practical for smaller deployments, PSKs have scalability and security limitations compared to digital certificates.  Understanding these components is crucial for configuring and troubleshooting IPsec VPNs.

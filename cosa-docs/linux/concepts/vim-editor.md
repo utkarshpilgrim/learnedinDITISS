@@ -265,3 +265,21 @@ This will open up contents of the **/path/** (it could be anything like /bin/, w
 
 Use the `:set wrap` command to wrap up the words, texts, and paragraphs inside vim editor. 
 
+# Change/Add text on specific lines
+
+To add a `-` at the start of lines 444 to 449 in Vim, you can use the following command:
+```bash
+:444,449s/^/- /
+```
+Here's how it works:
+
+- `:444,449` specifies the range of lines (from 444 to 449)
+- `s` is the substitute command
+- `^` matches the start of the line
+- `-` is the text to be added (a hyphen followed by a space)
+
+When you run this command, Vim will add a `-` at the beginning of each line from 444 to 449. If you don't want the space after the hyphen, simply remove the space from the command:
+
+```bash
+:444,449s/^/-/
+```

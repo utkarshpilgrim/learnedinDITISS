@@ -72,3 +72,65 @@ A local repository is the one on your machine, where you make changes and commit
 
 
 This expanded explanation provides a more detailed understanding of the concepts presented in the original notes, clarifying Git's internal workings, branching mechanisms, and interaction with remote repositories.
+
+# Undoing Changes in the Staging Area
+
+You can Unstage the files (remove the file from the index while keeping the changes intact in the working directory):
+
+```
+git restore --staged <file-name>
+```
+
+The command will only affect the index, while you changes in the working directory are still the same. 
+
+# Navigating Git History
+
+### Viewing commit history
+
+```
+git log --online
+```
+
+The command will give the list of commits performed in history with thier abbreviated SHA-1 and commit message. Use it to identify the commit you want to inspect.
+
+### Inspecting a specific commit
+
+To inspect the past state of the directory, use: 
+
+```
+git checkout <commit-id>
+```
+
+You will enter a **detached HEAD** state where you can explore the directory using `git show` or `git tree-ls` but you should not create new commits unless you want to make the changes. To return the normal: 
+
+```
+git checkout main
+```
+
+### Exploring git's internal objects (optional)
+
+Every commit, tree, and file content is stored as an object in .git/objects/. You can inspect them directly:
+
+```
+# Show the commit object
+git cat-file -p <commit-sha>
+
+# Example output
+tree df796557d61dcf236c4931156b4ae068777fb753
+author Kartikey <kartikey@example.com> 1234567890 +0530
+committer Kartikey <kartikey@example.com> 1234567890 +0530
+
+Initial commit message
+
+# Show the tree object
+git cat-file -p <tree-sha>
+
+# Example output
+100644 blob 07af81380248d433126ef464e286bc4abc3e57ca    file1.md
+100644 blob 5bdf9a1bc46f2a2fe053b333014552755f9aaac9    gitfile.md
+
+# Show the content of a blob (file)
+git cat-file -p <blob-sha>
+```
+
+The blob content is exactly what the file contained at the time it was commited. 

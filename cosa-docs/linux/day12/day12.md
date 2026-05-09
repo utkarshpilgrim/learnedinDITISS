@@ -71,154 +71,167 @@ This is called the SWAP memory.
 
 # Partition
 
-Prtition is the partitioning or speration of the disk that is to be used by end users, For example in windows the **: (colons)** are called partitions, such as **D:** or **C:**. 
+Disk partitioning divides a physical hard drive into logical units called partitions.  These partitions appear as separate drives to the operating system (e.g., C:, D: in Windows).  Partitioning allows for organizing data, installing multiple operating systems, and separating system files from user data.  While drive letters are a Windows convention, other operating systems use different identification methods (e.g., `/dev/sda1`, `/dev/sdb2` in Linux).
 
-- Boot Sector stores the information of the partition, generally it is called MBR (Master Boot Record), when we talk about MBR, it is also called zeroth sector of the disk. These sectors can be read using the foirst 440 Bytes that us called bootcode, it loads the bootloader into the memory. It is the MBRs first 440 bytes that contains the **bootcode** it tell that this disk is bootable. It is like a pointer that points to the bootloader, becuase bootloader can be huge cannot sits within the disk.
+The Master Boot Record (MBR) is a crucial data structure located in the very first sector of a hard drive (sector 0, often called the "boot sector"). It plays a critical role in the boot process. The MBR contains three key components:
 
-- After the first 440 bytes of the disk, it contains the partition table in next **64 bytes** and therefore all the information of the partition is kept in this. Not the partition but the information about it.
+1. **Boot Code (First 446 Bytes):** This code is executed by the BIOS (Basic Input/Output System) during startup.  Its primary function is to locate and load the operating system's bootloader (e.g., GRUB, LILO in Linux, NTLDR in older Windows versions).  The boot code is small and acts as an initial pointer to the larger, more complex bootloader, which resides elsewhere on the disk.  The term "bootloader" is sometimes used interchangeably with "boot code," but they are distinct: the boot code is a very small program within the MBR that hands off control to the bootloader.
 
-- MBR was designed in 1980s, so MB was so big memory, was too much. Therefore, MBR is capable of creating only four primary partitions. 
+2. **Partition Table (Next 64 Bytes):**  This table contains descriptive information about the primary partitions on the hard drive. For each partition, the table stores its starting and ending location (using Cylinder-Head-Sector (CHS) addressing in older systems or Logical Block Addressing (LBA) in modern systems), its size, and its type (e.g., bootable, extended).  The partition table *does not contain the actual data* of the partitions; it merely provides a map of their locations on the disk.
 
-- Becuase there is oly one boot sector this makes it very risky place to place the information and therefoere it is very crucial place to put the information.
+3. **MBR Signature (Final 2 Bytes):** The signature, `0x55AA` (or `AA55` depending on endianness), marks the end of the MBR and indicates to the BIOS that the MBR is valid. If the signature is missing or incorrect, the BIOS may assume the disk is not bootable.
 
-# Partitioning Commands
+**Limitations and Risks of MBR:**
 
-The first we are going to perform is **partition the disk using the fdisk**.
+* **Four Primary Partition Limit:** The MBR scheme allows for only four primary partitions. To overcome this limitation, one of the primary partitions can be designated as an "extended partition."  This extended partition can then be subdivided into multiple "logical partitions."
+* **2 TB Size Limit:** The MBR uses 32-bit addressing for LBA, limiting the maximum addressable disk size to 2 Terabytes (TB).  Larger disks require the use of the GUID Partition Table (GPT) scheme.
+* **Single Point of Failure:** Because all boot information resides in a single sector, the MBR is vulnerable to corruption or damage.  If the MBR is corrupted, the system may become unbootable.  Regular backups and recovery tools are important for mitigating this risk.
 
-```
-sudo fdisk device/path/for/the/disk
-```
+**GPT (GUID Partition Table):**
 
-You can go and choose the following menu that will privide you with certain amount of information. For example, if you choose **F**, it will list the partition space.
+Modern systems often use GPT, which overcomes the limitations of MBR. GPT uses globally unique identifiers (GUIDs) for partitions and supports larger disk sizes and more than four primary partitions. GPT also includes redundancy and checksums for improved data integrity.
 
-```
-Start      End  Sectors Size
-2048 23068671 23066624  11G
-```
+In summary, understanding the MBR structure, its function in the boot process, and its limitations is essential for anyone working with disk management and system administration.  The boot code, partition table, and signature within the MBR are critical components that enable the system to locate and load the operating system. While MBR has been largely superseded by GPT, understanding its principles remains valuable for working with older systems or troubleshooting boot issues.
 
-Then there is **add a new partition**, which will create a new partition.
 
-```
-Partition type
-   p   primary (0 primary, 0 extended, 4 free)
-   e   extended (container for logical partitions)
-```
+ ## Managing Partitions and Mount Points
 
-Then it will ask for the partition number, meaning it will create the type of partition, we want to create the partition of the primary so type *p*, the it'll ask for the following.
+This document outlines the steps to create, format, and mount partitions on a 10GB hard drive (represented as `/dev/nvme0n2` in this example – adapt as needed for your specific device).
 
-```
-Partition type
-   p   primary (0 primary, 0 extended, 4 free)
-   e   extended (container for logical partitions)
-Select (default p): p
-Partition number (1-4, default 1): 1
-First sector (2048-23068671, default 2048): 
-Last sector, +/-sectors or +/-size{K,M,G,T,P} (2048-23068671, default 23068671): 
+**1. Partitioning the Disk:**
 
-Created a new partition 1 of type 'Linux' and of size 11 GiB.
+Use `fdisk` (for MBR) or `gdisk` (for GPT – recommended) to create three partitions:
+
+```bash
+sudo fdisk /dev/nvme0n2   # Or sudo gdisk /dev/nvme0n2
 ```
 
-If you need to check the partition, then use the **p**. But yet nothing is commited, so you need to write the partition table using **w**. 
+Within the `fdisk` or `gdisk` utility:
+* Use the `n` command to create new partitions.
+* Specify the desired size for each partition (2GB, 3GB, and 5GB).
+* Use the `w` command to write the partition table to the disk.
 
-Now you can go and check and see the partition in the follwoing manner.
 
-```
-nvme0n2         259:4    0   11G  0 disk 
-└─nvme0n2p1     259:5    0   11G  0 part 
-```
 
-This has created the partition of the **one** disk. Now we need to go and delete the existing partition and use **d** to delete the partition we previously created.
+**2. Formatting the Partitions:**
 
-```
-Selected partition 1
-Partition 1 has been deleted.
-```
+Format each partition with the desired filesystem:
 
-Now we need to add the partition, use **n** again to add new partition.
-
+```bash
+sudo mkfs.ext4 /dev/nvme0n2p1  # Format partition 1 with ext4
+sudo mkfs.xfs /dev/nvme0n2p2   # Format partition 2 with xfs
+sudo mkfs.ext4 /dev/nvme0n2p3  # Format partition 3 with ext4
 ```
 
+**3. Creating Mount Points:**
+
+Create directories that will serve as mount points for the partitions:
+
+```bash
+sudo mkdir /p1
+sudo mkdir /p2
+sudo mkdir /p3
 ```
 
-```
-Partition type
-   p   primary (1 primary, 0 extended, 3 free)
-   e   extended (container for logical partitions)
-Select (default p): p
-Partition number (2-4, default 2): 2
-First sector (9766912-23068671, default 9766912): 
-Last sector, +/-sectors or +/-size{K,M,G,T,P} (9766912-23068671, default 23068671): +5GB
-```
+**4. Mounting the Partitions:**
 
-Now you can save the changes and quit using the **w** and now if you check the partition using the `sudo lsblk` command.
+Mount each partition to its corresponding mount point:
 
-```
-nvme0n2         259:4    0   11G  0 disk 
-├─nvme0n2p1     259:5    0  4.7G  0 part 
-└─nvme0n2p2     259:8    0  4.7G  0 part 
+```bash
+sudo mount /dev/nvme0n2p1 /p1
+sudo mount /dev/nvme0n2p2 /p2
+sudo mount /dev/nvme0n2p3 /p3
 ```
 
-# Adding a File System
 
-As you need to first format the file system, as you need to initialise the file system using the following command:
+**5. Verification:**
 
-```
-sudo 
-```
+Use the `findmnt` command to verify that the partitions are mounted correctly:
 
-# Mounting the Partition
-
-First you need to create the partition using the following command.
-
-```
-sudo mkdir /part1
+```bash
+sudo findmnt
 ```
 
-```
-/boot                 /dev/nvme0n1p2          xfs        rw,relatime,seclabel,attr2,inode64,logbufs=8,logbsize=32k,noquota
-```
+This command will display information about mounted filesystems, including the device, mount point, filesystem type, and other details.
 
-# Making the Mount Persistent
+* **Device Names:**  Replace `/dev/nvme0n2` with the actual device name of your hard drive. Use `lsblk` to list block devices and identify the correct one.
 
-The persistence of the mount file is important, if you shutdown your system and then restart the mounted points will gone while you go and check on them. So in that case, you need to mount again when you login. 
+* **Partition Numbers:** The partition numbers (`p1`, `p2`, `p3`) might vary depending on your existing partitioning scheme.  Verify with `lsblk`.
 
-Making the mount permanent using the following commands. Go to the **/etc/fstab**.
+* **MBR vs. GPT:** Use `fdisk` for MBR disks and `gdisk` or `parted` for GPT disks.  GPT is recommended for modern systems.
 
-```
-sudo vim /etc/fstab
-```
+* **Persistent Mounting:** To mount partitions automatically at boot, add entries to the `/etc/fstab` file. (Exercise caution when editing fstab, as incorrect entries can prevent your system from booting).
 
-Then make the changes in th entry.
+## Auto-Mounting with `/etc/fstab`
 
-```
-/dev/nvme0n2p1  /mnt/disk1      ext4    defaults        0 0
-/dev/nvme0n2p2  /mnt/disk2      ext4    defaults        0 0
-```
+The `/etc/fstab` file (File System Table) controls how and when filesystems are mounted at boot time and on demand.  Adding entries to this file allows you to automatically mount partitions, network shares, or other devices without manual intervention. **Steps for Auto-Mounting:**
 
-# Auto-Mounting 
+Edit `/etc/fstab`
 
-First you need to know that yo can check the default mounting using done by systemd. 
-
-```
-sudo systemctl get-default
+```bash
+sudo vim /etc/fstab 
 ```
 
-Now, you need to creating the file
+Add an Entry (using tabs, not spaces). Each line in `/etc/fstab` represents a mount point.  The format is:
 
 ```
-sudo vim /etc/systemd/system/p1.mount
+# add the following entry in the file
+# please make sure, you are using tab not the spaces
+# /dev/nvme0n2p1    /p1 ext4    defaults    0   0
+# /dev/nvme0n2p2    /p2 xfs    defaults    0   0
+# /dev/nvme0n2p3    /p3 ext4    defaults    0   0
 ```
 
-The  you need add th follwoing entry in the file. 
+Reload Systemd (or init system). This step is essential to make systemd aware of the changes to `/etc/fstab`.
 
+```bash
+sudo systemctl daemon-reload
 ```
+
+Test and Verify.
+
+```bash
+sudo mount -a  # Mounts all entries in /etc/fstab
+```
+
+Once you are done with mounting, you can go and create files within the file mounted directory and check for the respective filesystem using `df -T /disk1/something.txt`.
+
+# Auto-mounting using systemd
+
+We need to create the unit file with the naming convention of suppose `/devices/disk1`, so we need to create a `.mount` file with **devices-disk1.mount** in path `/etc/systemd/system/`, otherwise it would not work.
+
+```bash 
+> bash vim /etc/systemd/system/devices-disk1.mount
+
 [Unit]
-Description="This is a test mountused to mount first partition"
+Description="This is a test mount used to mount first partition"
 
 [Mount]
 What=/dev/nvme0n2p1
-Where=/p1
+Where=/devices/disk1
+Type=ext4
+
+[Install]
+WantedBy=multi-user.target
 ```
+
+Next, reload the daemon service. 
+
+```bash
+> sudo systemctl daemon-reload
+```
+
+Next, we need to check the status of mount point and the status at the time should be inactive (dead). 
+
+```bash 
+> sudo systemctl status device-disk1.mount
+> sudo systemctl start device-disk1.mount
+# now the service should show active
+> sudo systemctl status device-disk1.mount
+> sudo systemctl enable device-disk1.mount
+> sudo systemctl enable device-disk1.mount
+```
+
 
 # LVM 
 

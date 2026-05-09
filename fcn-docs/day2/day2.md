@@ -51,7 +51,7 @@ For reference, the price is always proportional to the capability of the process
     * So, machines are full of broadcast, even servers, there are like lot of broadcasts.
 * Switches cannot take down the broadcast, so servers go down when broadcast are overlaoded. 
 
-![alt text](flat-network.png)
+![alt text](diagrams/flat-network.png)
 <br>
 
 Now that we know that we need the solution to the Flat network Architecture of the Switches. We’ll look into identification of networks. We say there are networks that will uniquely identify the network using broadcast address of the particular networks.

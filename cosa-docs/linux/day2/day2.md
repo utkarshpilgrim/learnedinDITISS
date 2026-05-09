@@ -43,6 +43,18 @@ It is used to create the pipe file, used as `mkfifo fifo` which is a **pipe** fi
 prw-r--r--  1 utkarshsingh  staff    0 Sep 27 08:50 fifo
 ```
 
+# `stat` command
+
+The output of the stat copy.txt command shows four timestamps associated with the file "copy.txt". These timestamps, often represented as "Access," "Modify," "Change," and "Birth," reflect different events in the file's lifecycle and are crucial for understanding file management and data integrity. Let's break down each one, both logically and theoretically.
+
+**.Access**: This timestamp records the last time the file's contents were accessed (read). Logically, any operation that involves reading data from the file, even a small portion, will update the access time. 
+
+**Modify:** This timestamp indicates the last time the file's contents were modified (written to).  Logically, this happens when data is written to the file, changing its contents.
+
+**Change:** This timestamp reflects the last time any metadata associated with the file was changed.  This is different from modifying the file's contents.  Logically, changing permissions, ownership, or other attributes (like the extended attributes) of the file will update the change time.
+
+**Birth:**  This timestamp, sometimes called "creation time," shows when the file was created. Logically, it marks the point at which the file was first allocated space on the storage device and its metadata was written.  Theoretically, the file system assigns this timestamp during the file creation operation. The identical timestamp in this example shows that all file operations happened at almost precisely the same time, suggesting the file was created and possibly accessed immediately thereafter, without any intervening changes.
+
 # Groups in Linux
 
 You can assign the groups to the users, when you assign the users their respective groups, the files of that user will come under that group. Remember there are **three levels** of permissions given to the user. Either **user/owner**, or **group**, and **others**.
@@ -164,7 +176,19 @@ These are the following commands that can be used for process inspection:
 - Use `ps`, `ps -e` and `ps -e -o pid, ppid, cmd`, show what are actively running processes running, along with the information of their **PID** process-id, parent process-id, and all the commands running.
 - **`tty`** represents the terminal devices that are conneected.
 
-NOTE* OBJDUMB and EXECUTABLE
+<br>
+
+# `objdump` and Executables
+
+Let's clarify the terms "objdump" and "executables" in the context of Linux.
+
+**objdump:**  `objdump` is a command-line utility in the GNU Binutils package.  It's a powerful tool used to display information from object files (`.o` files), which are the intermediate output from a compiler before linking, and executable files (like those with the `.out` extension created by GCC, or those with a shebang).  It can disassemble the machine code into assembly language, display the contents of sections within the file (like code, data, debugging symbols), and provide other insights into the file's structure and contents.  Essentially, it's a crucial tool for reverse engineering, debugging, and understanding how programs are structured at a low level.
+
+**Executables:** In Linux, an executable is a file containing machine code that the operating system's kernel can directly load and execute.  Your statement, "executables means the file within the linux file system that contains the binary," is correct.  The binary code – a sequence of instructions in machine language that the CPU can understand – is stored within the executable file.  This is different from source code (e.g., `.c`, `.cpp`), which needs to be compiled before becoming executable.  Executables typically have execute permissions set, which allows the system to launch and run the program.  Often, they are identified by specific file extensions (though this is not strictly necessary for executability), or by the presence of a shebang line (e.g., `#!/bin/bash`) at the beginning of the script.
+
+
+In summary: `objdump` is a tool that helps you examine the internal structure of executable files (and other object files);  executables are the files in the Linux file system that hold the machine code ready for the CPU to run.
+
 
 
 

@@ -42,7 +42,7 @@ Three golden rules
 
 #### Extended ACLs
 
-Extended ACLs can be configure the interfaces for the other networks also, as you can define what destination IP would be in order to make rules based on IP address of another network. Consider you need to make a rule for the host in network A who should be **only** able to connect with `192.168.30.10` only in the other network. So that can be done using **Extended ACLs**.
+Extended ACLs can be configure the interfaces for the other networks also, as you can define what destination IP would be in order to make rules based on IP address of another network. Consider you need to make a rule for the host in network A who shouldn't be able to connect with `192.168.30.10` only in the other network. So that can be done using **Extended ACLs**.
 
 Sytax for configuring the Extended ACLs wull be:
 

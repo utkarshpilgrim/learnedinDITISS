@@ -74,20 +74,31 @@ File is simple collection of data and metadata (information about data), but wit
 
 # File System
 
-Whenever a file is created id first created in data block, then the meta data is stored in **FCB (File control block)**, both these file are stored in different blocks. Remember that data block is by default has size of **4 KB**, this can be changed during the foramtting of the disk.
+File systems organize files on a storage device.  When a file is created, its data is initially stored in a data block (typically 4KB, though this is configurable). Simultaneously, metadata describing the file is stored separately in a File Control Block (FCB).  If the file exceeds the capacity of a single data block, multiple blocks are allocated, and the FCB tracks their locations and the file's overall size.
 
-WHen file is beyond the file size of 4 KB, then there is multiple blocks are allocated to the file. Thus the meta deta (FCB) contains the information about the data block, menaing how much space is manged to the file and what is its size, it is called **Master File Table**, that store all the information about the volume and partition containing **label**, **size**, **filled/empty**, and **information about free data block**.
+This metadata management is centralized.  The Master File Table (MFT) is a crucial component, storing comprehensive information about the entire volume or partition.  This includes the volume label, total size, used/free space, and importantly, details about the location and size of data blocks allocated to each file.
 
-Partition is also called Boot Sector, containing Boot strap program and Boot loader program.
+A partition, often referred to as the boot sector, contains the bootstrap program and bootloader responsible for initiating the operating system's boot process.
 
-All these organisation of the files over the disk is called the **File System** on **partitions**, meaning there are partitions, one is for data, then meta data (FCB) called is Master File Table, then there is Volume Control Block, containing the partition and size of the file created, then there is Boot Sector, containing the boot starp and boot loader.
+In summary, a file system organizes files across a partition, encompassing the data blocks, the MFT (containing FCB-like information), the Volume Control Block (VBC) which holds partition and volume information, and the Boot Sector.
 
-The file sytem used is linux is called Extended File System. The conventions are given below:
+The Linux equivalent of these structures uses different terminology:  the FCB is analogous to an inode; the Master File Table to an inode list; the Volume Control Block to the superblock; and the Boot Sector to the boot block.  The common file system used in Linux is the Extended File System (ext).
 
-- FCB -> iNode
-- Master Contol Block -> iNode List
-- Volume Control Block -> Super Block
-- Boot Sector -> Boot Block
+# Basically Linux File System divide Partition in Four Sections 
+
+Linux file systems, such as the widely used Extended File System (ext), employ a different naming convention compared to the more general FCB-based description.  While the underlying concepts remain similar, the terminology reflects a different implementation.
+
+Instead of a File Control Block (FCB), Linux uses an **inode**.  An inode is a data structure containing metadata about a file, including its size, permissions, timestamps (creation, last access, last modification), and crucially, pointers to the data blocks where the file's contents reside.  It doesn't directly store the file's data itself; instead, it acts as a directory entry pointing to the actual data.
+
+The **inode list**, analogous to the Master File Table, is not a single, explicitly named table but rather an implicit organization of inodes.  The file system maintains a structured way to locate and access these inodes, essentially providing a mapping between filenames and their corresponding inodes.  This mapping is often stored in directory structures on the file system itself.
+
+The **superblock** in Linux serves the same function as the Volume Control Block (VBC). It contains crucial information about the entire file system, such as its size, block size, free space, and the location of various system structures within the file system.  It's a central control point for the file system's metadata.
+
+Finally, the **boot block** is directly equivalent to the Boot Sector.  This block contains the boot loader, the small program responsible for initiating the boot process by loading the operating system kernel.
+
+
+In short, the concepts are the same, but Linux uses a more sophisticated and efficient implementation under a different naming scheme. The use of inodes, for example, provides a more flexible and robust method of managing file metadata. The Extended File System (ext) family, including ext2, ext3, ext4, and later versions, builds upon these core principles to provide a reliable and performant file system for Linux.
+
 
 # How Linux manages files?
 
@@ -95,9 +106,8 @@ Liux creates files in **Tree Like Structure**, all the files are manges in Tree 
 
 ```
 ❯ ls /
-❯ ls /
-Applications System       Volumes      cores        etc          opt          sbin         usr
-Library      Users        bin          dev          home         private      tmp          var
+afs  boot  etc   lib    media  opt   root  sbin  sys  usr
+bin  dev   home  lib64  mnt    proc  run   srv   tmp  var
 ```
 
 - **boot** dir - this contains the booting related information of the operating system, information of the kernel that id stored inside the boot. It also contains kernel config file.
@@ -115,13 +125,15 @@ Library      Users        bin          dev          home         private      tm
   - sbin
   - lib
   - share 
-- **lib** dir - 
+- **lib** dir - Lists shared libraries and their paths.
 - **opt** - all the third party data goes to the opt directory, as those s/w not provided by the OS.
 - **dev** dir - it has all device files, remember unlike media dir, it stores all the device files.
 - **proc** dir - stores all the system processes and system related information, captures memory related information. All the information regarding teh process is stored inside the proc directory.
 - **sys** dir - all kernel modules information is stored, as kernel doesn't do anything itself, so all those inforamtion about the modules are stored here.
 
-Remember that **dev**, **proc**, and **sys** directories are the one that are not created during the runtime of the system application, it is called Virtual File System, becaues they are not present on the hardisk.
+There are certain commands associated to the directories, for example, if you need ceratin information regarding the user, you need to take follow ups with `/home` directory. Refer to [Linux File System](../concepts/linux-file-system.md) to understand more about it. 
+
+The data for the **/dev**, **/proc**, and **/sys** is dynamically generated during the runtime and thereofore the data is dynamical in size is isn't stored on the hard disk. While the data within these directories isn't typically stored persistently on the hard drive in a way that `/home` is, the directories themselves exist and their contents are dynamically generated and updated throughout the system's operation.  
 
 # Accessing Directories
 
@@ -248,4 +260,8 @@ The below are the convention that are followed in the Linux.
 |Hard Disk  | sda, sdb, sdc, ...|
 |Partitions  | sda1, sda2, sda3, ...|
 
+# What is kernel Ring Buffer?
 
+The kernel ring buffer is a circular buffer in the Linux kernel's memory used to store system messages, primarily logging kernel events.  Think of it like a rotating log file – when the buffer fills up, new messages overwrite the oldest ones.  This ensures that the kernel always has a recent record of events, even if there's a continuous stream of messages.  Its circular nature prevents the need for constant file writing and management, making it efficient for recording many small messages that may not all be interesting to the user.  The size of the ring buffer is configurable, but the default size is often relatively small, meaning that crucial messages might get overwritten if the system is experiencing high levels of activity.
+
+The `dmesg` command is a simple utility that displays the contents of the kernel ring buffer.  When you run `dmesg`, it reads and prints the messages stored in this buffer, providing a history of recent kernel events, including boot messages, driver loading information, warnings, and errors. This is invaluable for troubleshooting system problems, as it shows what the kernel was doing just before a crash or malfunction.  Various options allow filtering and formatting of the output, making it possible to extract specific information from the sometimes voluminous log.  For example, `dmesg | tail` shows only the most recent messages.

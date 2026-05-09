@@ -87,4 +87,28 @@ Remember that once you create the file screen for a folder, you can't create a f
 
 9. Then **Evaluation Type**, how many times the rules will be checked after **modification**.
 
+# Network Policy Server
 
+The primary job of a **Network Policy Server (NPS)** in Windows Server is to manage network access policies, providing centralized authentication, authorization, and accounting for network clients. Here are the key functions and roles of NPS:
+
+### Key Functions of Network Policy Server (NPS)
+
+1. **Authentication:**
+   - NPS authenticates users and devices attempting to connect to the network. This process ensures that only legitimate users with valid credentials can access network resources. NPS can work with various authentication protocols, including EAP (Extensible Authentication Protocol) for secure connections.
+
+2. **Authorization:**
+   - After authentication, NPS determines what resources the authenticated user or device is allowed to access. It applies predefined policies based on user roles, device characteristics, and connection types. This ensures that users have access only to the resources necessary for their roles.
+
+3. **Accounting:**
+   - NPS tracks user activity on the network, logging connection requests and responses. This information can be used for auditing and reporting purposes, helping organizations monitor usage patterns and ensure compliance with security policies.
+
+4. **RADIUS Server:**
+   - NPS functions as a RADIUS (Remote Authentication Dial-In User Service) server, enabling centralized management of authentication requests from various network access servers (NAS), such as VPNs, wireless access points, and switches.
+
+5. **RADIUS Proxy:**
+   - NPS can also act as a RADIUS proxy, forwarding authentication requests to other RADIUS servers if necessary. This is useful in environments with multiple RADIUS servers or when integrating with third-party authentication services.
+
+6. **Network Access Protection (NAP):**
+   - NPS can enforce health policies through Network Access Protection (NAP), ensuring that only compliant devices are granted access to the network. This includes checking for up-to-date antivirus software, operating system patches, and other security measures.
+
+In summary, the primary job of the Network Policy Server is to provide a centralized framework for managing network access through authentication, authorization, and accounting processes. By enforcing policies and ensuring secure access to resources, NPS plays a critical role in maintaining network security and compliance within an organization.

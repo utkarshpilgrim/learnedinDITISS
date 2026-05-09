@@ -92,11 +92,11 @@ You need to log into the original page, or perphaps you need an actual link, tha
 
 # Social Engineering Toolkit
 
-You missed several steps and explanations within your notes on the Social Engineering Toolkit (SET). Here's a more complete breakdown:
+Here's a more complete breakdown:
 
 **Installation:**
 
-* You mentioned installing SET, but *how*?  Specify the commands.  Typically, this involves cloning the SET repository from GitHub and running the setup script.  The commands would look something like this:
+* Typically, this involves cloning the SET repository from GitHub and running the setup script.  The commands would look something like this:
 ```bash
 git clone https://github.com/trustedsec/social-engineer-toolkit/ set
 cd set

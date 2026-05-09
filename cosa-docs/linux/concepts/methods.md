@@ -191,4 +191,189 @@ Use the below command to get the absolute path of the target file.
 realpath filename
 ```
 
+# What does `namei` do?
 
+`namei` is a filepath decomposer, which takes the filepath consisting of multiple path and returns the data.
+
+`namei` takes a pathname (or multiple pathnames) as input and breaks it down step by step, showing each directory, file, or symlink in the path.
+
+```bash
+namei -l /home/tvisha/file_
+```
+
+The above option `-l` lists owner, group, and other permission.
+
+# `groups` command
+
+Use the `groups` *`username`* command to know what groups the user is part of. 
+
+# How to remove the user from Group?
+
+```bash
+gpasswd -d username groupname
+```
+
+# Checking the size of the file
+
+The cmd `yes` along with `head` is used to file up the file with some content of size 10MB. 
+
+```bash
+yes "this is my test file" | head -c 10MB > testfile.txt
+```
+
+To the size of the file, there are multiple commamds that are used for checking the size of the file. 
+
+Use `du -sh filename.txt` to check the size of the file. You can also check the size of the folder using `du` command. 
+
+```bash
+$ du -sh redhat-linux/
+2.2G	redhat-linux/
+```
+
+This is the true total disk usage of all files and subfolders inside.
+
+# When to What `()`, `{}`, and `[]`
+
+
+# Creating Disk Images in MacOS
+
+Use `hdiutil` to make raw disk images. If you created it using Disk Utility or with `hdiutil` and chose a format like HFS+, FAT32, or APFS — it was **pre-initialized with a partition**.
+
+```bash
+hdiutil create -size 1G -fs ExFAT mydisk.dmg
+```
+
+Use the below command to convert it into the proper format. 
+
+```bash
+hdiutil covert forRhel9.dmg -format UDRW -o forRhel9.img
+```
+
+Sometimes when you find the image is already mounted or in use, detach it using the following command. 
+
+```bash
+hdiutil detach /dv/disk4
+```
+
+# Check logs in MacOS
+
+Check logs for the last 10m on macOS.
+
+```bash
+log show --info --last 10m
+```
+
+# Creating sparsing disk
+
+You **can manipulate the size** of a disk image created using `hdiutil` on macOS **before** or **after** attaching it to a Fedora Server virtual machine using `tart` with the `--disk` option. But how and *when* you can resize it depends on the type of disk image you created and whether you're resizing it *before* or *after* creating a filesystem on it.
+
+## Step-by-Step: Manipulating Disk Size Created via `hdiutil`
+
+### **Creating a resizable disk with `hdiutil`**
+
+If you're creating a sparse or growable disk image:
+
+```bash
+hdiutil create -type SPARSE -size 10g -fs HFS+ -volname EmptyDisk emptydisk.sparseimage
+```
+
+This creates a sparse image with a **maximum size** of 10 GB, but it only takes up as much disk space as is actually used.
+
+To attach it with `tart`:
+
+```bash
+tart run fedora-server --disk path/to/emptydisk.sparseimage
+```
+
+---
+
+### **Resizing the disk image before usage**
+
+To **resize** a disk image (only SPARSE or SPARSEBUNDLE types can be resized easily):
+
+```bash
+hdiutil resize -size 20g path/to/emptydisk.sparseimage
+```
+
+> This increases the maximum capacity. Actual usage may remain small.
+
+---
+
+### **After attaching to Fedora via `tart`**
+
+Once attached as a virtual disk, inside Fedora:
+
+#### a. Identify the new disk:
+```bash
+lsblk
+```
+or
+```bash
+fdisk -l
+```
+
+You might see it as `/dev/vdb` or `/dev/sdb`.
+
+#### b. Create a partition (if not done already):
+```bash
+sudo fdisk /dev/vdb
+```
+Then create a new primary partition (`n`, then `w` to write).
+
+#### c. Format the partition:
+```bash
+sudo mkfs.ext4 /dev/vdb1
+```
+
+#### d. Mount the disk:
+
+```bash
+sudo mkdir /mnt/disk
+sudo mount /dev/vdb1 /mnt/disk
+```
+
+### Resize Later (After Filesystem Exists)
+
+If you already formatted the disk and want to **increase** its size:
+
+#### a. First, resize the `.sparseimage` on macOS:
+```bash
+hdiutil resize -size 25g path/to/emptydisk.sparseimage
+```
+
+#### b. Then inside Fedora:
+```bash
+sudo growpart /dev/vdb 1
+sudo resize2fs /dev/vdb1
+```
+
+This resizes the partition and filesystem without losing data.
+
+> `growpart` is part of the `cloud-utils-growpart` package.
+
+
+- **Only sparse images are easily resizable.** If you created a raw `.img` with `-type UDIF` or `-layout NONE`, resizing might require manual block-level editing.
+- Resizing is only meaningful if **you expand the underlying partition and filesystem** after boot.
+
+| Action | Command |
+|--------|---------|
+| Create sparse image | `hdiutil create -type SPARSE -size 10g ...` |
+| Resize image | `hdiutil resize -size 20g path/to/image` |
+| Resize Linux partition | `growpart`, `resize2fs` |
+
+Let me know if you want to automate attaching, formatting, or mounting the disk in Fedora.
+
+# Iterating over list of users
+
+```bash
+[root@localhost ~]# for i in "harry" "natasha" "sarah"; do passwd --stdin $i; done
+Changing password for user harry.
+belhacks
+passwd: all authentication tokens updated successfully.
+Changing password for user natasha.
+belhacks
+passwd: all authentication tokens updated successfully.
+Changing password for user sarah.
+belhacks
+passwd: all authentication tokens updated successfully.
+```

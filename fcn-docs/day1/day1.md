@@ -100,12 +100,13 @@ Let’s see Unicaset and Braodcast:
 * The unicast works as if  two ends are to be communicated
 * Another sis BraodCast address, themmachine will see if the mac cddress it not changing, then it said be rereciveving the data.
 
-Once the machine that were communicating , the probability of remaining machine i the waiting state, that number increases, when there are more number of machine. If there are more mahcines, the more backoff timer, the more there will be more, so you can imaginetha tthe more machin will be ther, ther more ther will be wastage of speed, say if the speed is 100Mbps, then say if 100Mbps is wasted. 
-In this case there is also a limit of getting redialed, that is avaliability of the media will be the problem, these two drawbacks of the using the ethernet. So it is important to note that the availability ofthe media doesn’t come to a limitation.
+In a shared Ethernet environment, the probability of devices waiting to transmit increases with the number of devices.  More devices mean longer backoff timers and greater wasted bandwidth.  For example, a 100 Mbps link could experience significant performance degradation if many devices contend for access.  Furthermore, repeated retransmission attempts due to collisions can lead to media saturation, limiting availability. However, media saturation itself isn't the only limiting factor; contention among devices also severely impacts performance even before the media becomes fully saturated.
 
-* Electromagnetic Interference, this is what makes the changes to the data during the transmission of data. Because this strong magnetic fields changes the bits and bytes of the data, 1 may become 0, 0 may become 1. Same with RFI.
-* Second is the siglnals might be weak, due to this, this can cause a problem in bits of data.
-* So what does the CRC does? A CRC is going to be mismatch if there is going to be some happering during the transmission of data. So on the destination the calculation of the CRC is recalculated.
-* MTU, Maximum transmission units. 
-* The frame size could vary between 64 to 1518 bytes.
-* Remember that all the calculation happens in the NIC, as it has nothing to do with the Operating system as such or with the processor.
+- Data transmission can be corrupted by electromagnetic interference (EMI) and radio frequency interference (RFI).  These strong magnetic fields can alter bits, changing 1s to 0s and vice-versa.  Weak signals can also cause bit errors.
+
+- A Cyclic Redundancy Check (CRC) detects these errors.  The transmitting device calculates a CRC and adds it to the data; the receiving device recalculates the CRC. A mismatch indicates data corruption.
+
+- Maximum Transmission Unit (MTU) defines the largest frame size, typically ranging from 64 to 1518 bytes.
+
+Importantly, CRC calculation and frame size limitations are handled at the Network Interface Card (NIC) level, independent of the operating system and CPU.
+

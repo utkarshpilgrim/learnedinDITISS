@@ -24,7 +24,7 @@
 
 - Get to know the *Family tree* of the Linux. 
 
-- Manu Sir also has developed **Matriax** operating system.
+- **Matriax** operating system developed by Manu Sir.
 
 - Port uses the Transport layer, IP addresses uses Network Layer, Data Link layer uses Switches, traditional layer works on L2, but now there are L2 and L3 Switches. Routers works on Network Layer. 
 
@@ -64,15 +64,26 @@ Understanding these more advanced concepts of private and public IP addressing p
 
 # Web Security
 
-- First thing that you need for hosting a website is *domain name*, say mrdhvi.in, so what we need is that we need domain name that will be mapped with an IP address of the web server but it is not complusory to have a domain name, domain name only provides an sense of identification for the website, though it can run on IP alone also.
+First thing that you need for hosting a website is *domain name*, say mrdhvi.in, domain name that will be mapped with an IP address of the web server but it is not complusory to have a domain name, domain name only provides an sense of identification for the website, though it can run on IP alone also.
 
-Note* You can go through internetarchive.org is the website, meaning it is where data will always be there if once there was data on the internet. 
+<div style="border-left: 4px solid #007acc; background-color: #f1f6f9; padding: 10px; border-radius: 5px;">
+<strong>Note: </strong> You can go through internetarchive.org is the website, meaning it is where data will always be there if once there was data on the internet. 
 
-Note* You need answers to the question such as authentication, and how to achieve the authentication and how you ensure comliance and ***File Permission sticky bits***. Now how do you ensure data integrity and therefore you need to use ***Checksum or Hash Algorithm***, in linux there are utilities to check te value of file.
+You need answers to the question such as authentication, and how to achieve the authentication and how you ensure comliance and ***File Permission sticky bits***. Now how do you ensure data integrity and therefore you need to use ***Checksum or Hash Algorithm***, in linux there are utilities to check te value of file.
 
-Note* Non-Repudiation, meaning that whatever action a user is performing, he cannot deny that all those operations wern't perforemd by him. This is basically sed in backing sectors, the frameworks that are used are called ***Data Non-Repudiation***.
+Non-Repudiation, meaning that whatever action a user is performing, he cannot deny that all those operations wern't perforemd by him, used in banking sector, the frameworks used are called <strong>Data Non-Repudiation</strong>.
+</div>
 
-- Next, big thig is when we talk about **Network-based Attack**, another could be **Host-based attack** or it can be an **Application-based Attack**, it could be deskotop app, mobile app, or these multiple kindo of attacks are called, Arrack. THen thre is **RFID plannner**, that projects the employee after
+* **Network-based attacks:** These target network infrastructure, exploiting vulnerabilities in protocols, devices (routers, switches), or configurations. Examples include denial-of-service (DoS) attacks, man-in-the-middle (MitM) attacks, and port scanning.
+
+* **Host-based attacks:** These target individual computers or servers.  Exploiting vulnerabilities in operating systems, software, or user practices. Examples include malware infections, privilege escalation, and brute-force attacks.
+
+* **Application-based attacks:** These exploit weaknesses in specific applications, whether desktop software, web apps, or mobile apps. Examples include SQL injection, cross-site scripting (XSS), and buffer overflow attacks.
+
+All of the above fall under the broad umbrella of a **cyberattack**.  A cyberattack is any attempt to gain unauthorized access to, disrupt, or damage a computer system or network.
+
+It likely refers to using RFID (Radio-Frequency Identification) technology for access control or personnel tracking. **RFID access control system** or **RFID-based personnel tracking system**.  This system would manage employee access and potentially log their movements within a facility.
+
 
 Note* If you want to see what is gttign downloaded from the **torrent** and you can see this using the website whatdidyoudownload.com that will give you the information. 
 

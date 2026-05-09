@@ -152,3 +152,12 @@ Don't forget to anchor with `^` or `$` for start/end of line, if you want to sea
 
 Using **word boundary** are important, suppose you need to search for *art* in a text file, don't do `grep "art" file.txt`, instead do `grep "\bart\b" file.txt`
 
+# Bonus Content
+
+Most of the times it is needed from you to efficiently search though the timestamps and may status, in that case you can use below expressions to search through timestamps. 
+
+```bash
+egrep '([A-Z]+) ([0-9-]+) ([0-9:]+) username=[a-z]+ status=([a-z]+)' file.txt
+```
+
+The above file fill efficiently search through the files with data on username and commands they run along with severity status. 

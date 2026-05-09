@@ -33,12 +33,18 @@ This is about the relvealing the sensitive information and that when it comes to
 
 ### Fus Triangle
 
-- **Security**
-- **Usability**
+- **Vulnerabilty**
+- **Threat**
+- **Asset**
+
+- **Scenario** - A financial institution has outdated software (vulnerability) that is known to have security flaws. Cybercriminals (threat) target this specific software to gain access to customer accounts (asset). When these three elements converge, the institution faces a high risk of a successful cyberattack, potentially leading to significant financial loss and reputational damage.
+
 
 ### Defense in Depth
 
-This is called the elsatic defense/ Castle defese. Military strategy which will remove the 
+This is called the elsatic defense/ Castle defese. 
+
+- **Scenario** - An organization implements several security measures, including firewalls, intrusion detection systems, regular software updates, and employee training on phishing awareness. If an attacker attempts to exploit an unpatched vulnerability in the network (first layer), they encounter the firewall (second layer). Even if they bypass the firewall, the intrusion detection system triggers alerts for suspicious activities (third layer). This multi-layered approach significantly reduces the likelihood of a successful attack and mitigates potential damage.
 
 # Wireshark
 
@@ -53,9 +59,13 @@ Wireshark is basically using the Npcap Library that is being used for the instal
 - There are three windows, one is packet list, packet details and packet bytes. 
 
 - There are two kinds of filtering, one is **capture filter** and **display filter**. 
-  - The Capture filter is one that matches the condition and allows and deny the traffic at the door incomming itself.
 
-  - The Display filter displays the packets captured based on parameters applied. This is the one that shows the traffic.
+Wireshark employs two primary types of filtering to manage and analyze network traffic:
+
+1. **Capture Filters**: These filters are set before the packet capture begins and determine which packets will be captured by Wireshark. For example, you can configure capture filters to only capture packets from a specific source IP address or a particular protocol. This allows you to limit the amount of data collected, making it easier to focus on relevant traffic.
+
+2. **Display Filters**: After packets have been captured, display filters are used to specify which packets should be shown in the Wireshark interface. These filters help narrow down the displayed data based on various criteria, such as specific ports, IP addresses, or protocols. Display filters are applied post-capture, allowing users to analyze the captured data more effectively by filtering out unnecessary information.
+
 
 # Hash Function
 
@@ -178,4 +188,15 @@ The above gave the full packet, but you can filter that too, you can filter the 
 ```
 sudo tcpdump -c 2 --xxe -s 4
 ```
+
+# Common Options
+
+| Option          | Description                                     |
+|-----------------|-------------------------------------------------|
+| `-i [interface]`| Specifies the network interface to capture from |
+| `-w [file]`     | Writes captured packets to a specified file `.pcap`    |
+| `-r [file]`     | Reads packets from a specified file             |
+| `-A`            | Prints packet payloads in ASCII format          |
+| `-v`, `-vv`, `-vvv` | Increases verbosity of output                 |
+
 

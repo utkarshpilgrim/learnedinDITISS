@@ -75,28 +75,28 @@ Verify certain things before getting ahead. You need to check the Firewall first
 
 - Basically what we are doing is that when we are making the file we are requried to make the file public and therefore we need to install the we need to 
 
-```
-define host {
-    use                     windows-server
-    host_name               win-10_1
-    alias                   Windows 10 System 1
-}
+    ```
+    define host {
+        use                     windows-server
+        host_name               win-10_1
+        alias                   Windows 10 System 1
+    }
 
-define service {
-    use                     generic-service
-    host_name               win-10_1
-    service_description     NCPA Agent Version
-    check_command           kcheck_ncpa!-t 'Password1234' -p -P 5693 -M system/agent_version
-}
+    define service {
+        use                     generic-service
+        host_name               win-10_1
+        service_description     NCPA Agent Version
+        check_command           kcheck_ncpa!-t 'Password1234' -p -P 5693 -M system/agent_version
+    }
 
-define service {
-    use                     generic-service
-    host_name               win-10_1
-    service_descriptions    CPU Average
-    check_command           check_ncpa!-t 'Password1234' -p -P 5693 -M cpu/percent -w 20 -c 40 -q 'aggregate=avg'
-}
+    define service {
+        use                     generic-service
+        host_name               win-10_1
+        service_descriptions    CPU Average
+        check_command           check_ncpa!-t 'Password1234' -p -P 5693 -M cpu/percent -w 20 -c 40 -q 'aggregate=avg'
+    }
 
-```
+    ```
 
 # Reverse Proxy
 
@@ -142,6 +142,8 @@ server {
     ```
 
 - Now just do the simple restart the service.
+
+<br>
 
 **Key Differences & When to Use Which:**
 
@@ -207,4 +209,6 @@ Often, they are used together, with Nginx serving static content and handling in
 
 # What do we mean by all that?
 
-*You might ask, what is the difference between the squid and Nginx? Or what is the difference between Nginx and HAproxy? What to use when?* 
+*You might ask, what is the difference between the squid and Nginx? Or what is the difference between Nginx and HAproxy? What to use when?* Squid, Nginx, and HAProxy, all are having have a similar functinality, and can be used according to our our convinience. 
+
+

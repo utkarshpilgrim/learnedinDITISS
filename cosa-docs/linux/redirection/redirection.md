@@ -63,7 +63,7 @@ thisi fiel
 thisis is ano
 ```
 
-As the `cat` cmd is doing nothing above here except that it is now accepting a response from the another file `file.txt`.
+As the `cat` cmd is doing nothing above here except that it is now accepting a response from the another file `file.txt`. Refer to [Understanding Shell Script's idiom: 2>&1](https://www.brianstorti.com/understanding-shell-script-idiom-redirect/) to learn little more about how things are working around here. 
 
 # Pipelines
 

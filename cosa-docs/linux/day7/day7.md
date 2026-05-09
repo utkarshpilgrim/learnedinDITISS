@@ -98,7 +98,7 @@ Remember if there are going to be multiple partitions, refer to [operating syste
 
 # Positional Parameters
 
-|  |  |
+| Parameters |  |
 |--|--|
 |`$*`| All positional arguments|
 |`$1`, `$2`, `$3`| Positional Parameters individually|

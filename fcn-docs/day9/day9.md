@@ -41,7 +41,7 @@ In the switches when there are broadcast storm, Spanning tree protocol can be us
 
 Every switch has a MAC address that manages itself through it, and every switch priority is set through the **lowest Switch ID**. Then there are **BPDU** messages, that contains the Switch ID and other information and these messages are sent by every other switch to other switch in the network. Once there is table established that who is the lowest, then only the one with the Lowest SWitch ID will be sending the BPDU messages. These **BPDU** messages are send every 2 sec. 
 
-The lowest switch ID assigns itself the **Root Switch**, and hence every switch is able to idetify that there is only on root in the whole network. This allows the other switches in the network to be able to generate the **Desginated port**, which will not recieve the messages from the **root** port, meaning there is a **root port from which other switches are able to recieve the message.
+The lowest switch ID assigns itself the **Root Switch**, and hence every switch is able to idetify that there is only on root in the whole network. This allows the other switches in the network to be able to generate the **Desginated port**, which will not recieve the messages from the **root** port, meaning there is a **root** port from which other switches are able to recieve the message.
 
 Now there is an election to decide who is going to be the **telender switch**, the one that will close one of the interface to recieve the frames. If there are more than one switch with the same STP cost, then there is going to be another criteria, it will follow the lowest Port ID.
 

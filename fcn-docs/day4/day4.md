@@ -85,14 +85,12 @@ TIll now we saw one classical paradigm of configuring a router, as through **Put
 
 ### SNMP
 
-- SNMP (Simple network management protocol) has SNMP server and agent.
-- SNMP can be used to configure the server as it has traps and alerts. Suppose a link inutilzed 100% for 5 minutes, you can tell ther servers to shitdown the system. These traps badically triggers the SNMP, and you can do this by configuring the settings, when to trigger and where to stop on SNMP server. 
-- Configuration fo SNMP is very critical and only experts are able to do it.
-- Also called NSM, Network management Software.
+SNMP (Simple Network Management Protocol) uses a server-agent architecture.  The agent resides on managed devices (like routers and switches), collecting data and responding to requests from the SNMP manager (server).  SNMP's trap and alert capabilities allow for automated responses to network events. For example, a sustained 100% link utilization could trigger a trap, prompting the SNMP manager to initiate actions like server shutdown.  These trap thresholds and actions are configured on the SNMP server. SNMP configuration is complex and requires specialized expertise.  Network management systems (NMS), sometimes called NSM (Network Management Software), utilize SNMP to monitor and manage network devices.
+
 
 ### X-Windows, RPC
 
-Everywhere X-Windows and RPC (Remote Procedure Control), where X-Window is used to see the GUI of the remote server and RPC is uesd to control the GUI of the remote machine.
+Everywhere X-Windows and RPC (Remote Procedure Control), where X-Window is used to see the GUI of the remote server and RPC is uesd to control the GUI of the remote machine. X11 (the most common version of the X Window System) typically uses port 6000 and above. The specific port used is often determined dynamically when a connection is established.
 
 ### DNS
 

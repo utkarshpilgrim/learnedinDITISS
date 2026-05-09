@@ -52,7 +52,7 @@ Refer to [Active Directory](../concepts/active-directory.md) if you need to lear
 
 # How does DNS works within a Forest
 
-We know DNS was created to translate and provide IP addresses used on the *Internet*. There are two components connected with this DNS system:
+Refer to [day17](../../linux/day17/day17.md), where we disussed various concepts of DNS server and client. We know DNS was created to translate and provide IP addresses used on the *Internet*. There are two components connected with this DNS system:
 
 1. **Root Servers**
   - Root Servers are made of fixed IPs that stores the collection of **top-level** IPs, such as **.com**, **.edu**, **.org**, and **.in**. 

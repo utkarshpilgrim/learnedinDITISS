@@ -1,12 +1,8 @@
 # `tcpdump` Is The First IDPS
 
-Lets get into the basics, when any packet is comming and filtering them and inspecting them and all, that is called Intrusion Detection and Preventaion System. Now the policies in the organisation decides what is intrusion and that is decides by organisation. 
+Lets get into the basics, when any packet is coming and filtering them and inspecting them and all, that is called Intrusion Detection and Preventaion System. Now the policies in the organisation decides what is intrusion and that is decides by organisation and the rules defined in the Snort are only for the detection of Intrusion. 
 
-We use **Snort** and lets get into this. We'll be installing Snort.
-
-- Look for tthe C drive and initialiiy there won't be any Snort Application.
-
-- **Snort Setup** requires WinPcap, so need to install WinPcap.
+We use **Snort** and lets get into this. We'll be installing Snort as well as WinPcap and remember to uninstall antivirus.a
 
 - **Adding exception**, so first decide a folder where you are going to install that file, so go to **Virus thread protection**, you'll find **Exlusion**, **Add an Exclusion**, and then add an folder to it. 
 
@@ -45,7 +41,7 @@ We use **Snort** and lets get into this. We'll be installing Snort.
 Snort is like an engine that will only do something when you provide it rules for which it will start performing and reacting based on those rules that will define how it is suppose to perform. Basically it is the concept of **rules** and **signature**
 
 - Write your own rules or you can use the developers file for the file.
-  - First Unzip the file and then extract it to the **Snort** folder by unchecking the block below the path, and override without prompt.
+  - First Unzip the file and then extract it to the **Snort** folder by unchecking the block below the path, and override without prompt. In windows you need to extract files by going from **7-zip**.
   - Now you need to Snort in IDS mode.
 
 Note* One of the dangereous file is browser-ie.rules, which OS tries to delete it again and again.
@@ -73,13 +69,16 @@ Run the following command in order to test the snort.
 snort -i 3 -c c:\Snort\etc\snort.conf -l c:\Snort\log -T
 ```
 
+<br>
+
+
 # Troubleshooting the Errors
 
 Now when you'll run the last command, you might get the error, lets discuss these errors and this is how do we understad the outputs and problmes.
 
 ### `ipvar`
 
-The First error that we'll get is the ERROR: `ipvar`, which specifies that there is different version of IP running, we need IPv4, but IPv6 is running. In order to trouble shoot, you need to find the ipvar and replace it var. 
+**Count the ipvar**. The First error that we'll get is the ERROR: `ipvar`, which specifies that there is different version of IP running, we need IPv4, but IPv6 is running. In order to trouble shoot, you need to find the ipvar and replace it var.  
 
 
 If you try finding `ipvar` and it is important that there should be 11 occurences for the same string. Once you make changes to the file, always save the configuration file after every change. Always verify the errors and always pay attention on this one.
@@ -92,16 +91,46 @@ This is path to dynamic preprocessor libraries which is having the linux path an
 # Go to snort.conf and change the path
 dynamcipreprocessor/
 ```
+What you need to do is that you need to below path and click on path and enter **cmd**, and run the command `dir /b`.
 ```
 Basically the file with the path C:\Snort\lib\snort_dynamicpreprocessor\filename.llb
 ```
+
+And then you need to copy the file names to the snort.conf configuration file.
+
+### snort_dynamicengine
+
+Next, dynamicengine error will come where you need to copy the path as below:
+
+```
+C:\Snort\lib\snort_dynamicengine\sf_engine.dll
+```
+
+You need to put this path to the snort.conf file below the snort dynamic engine.
 
 ### snort_dynamicrules
 
 This is the folder that is allowing you to change the rules file that is associated eith it. 
 
+- First you need to create a folder insidfe the Snort\lib\snort_dynamcirules, by name dynamcirules.
+
+- Note tha now there are no files isnidfe the folder.
+
 Now Comment out the first five lines from the snort.conf file. 
 
+### unknown preprocessors
+
+Comment the line from 279 upto 283. And thats all.
+
+### white_list.rules
+
+We created the document inside the C:Snort\rules (name should be white_list.rules).
+
+### black_list.rules
+
+Do thhe same thing bbut the file name should be C:Snort\rules\black_list.rules.
+
+For this you would be required to add the rules to the file, 
 # Change
 
 ```
@@ -149,9 +178,11 @@ Now you need to create new txt documentation order to make few changes tnd therf
 
 # Writing Snort Rules
 
-Lets start with an empty file, the first keyword that we need is the following.
+Lets start with an empty file, the first keyword that we need is the following. Create the file inside the C:Snort\rules
 
 ```bash
+                                                                space
+                                                                |
 # alert protocol src-ip src-port direction dst-ip dst-port (msg: "IP address")
 alert ip any any -> any any (msg: "IP Packet Detected"; sid: 100001;)
 ```
@@ -168,7 +199,7 @@ include $RULE_PATH/anyname.rules
 
 # What Actually we are doing?
 
-The `.md` file you've provided documents the process of installing and configuring Snort, an intrusion detection system, on Windows, along with setting up a Debian virtual machine.  The "Troubleshooting the Errors" sections describe common problems encountered during this process and how to fix them. Let's break down the specific issues mentioned:
+This sections describe common problems encountered during this process and how to fix them. Let's break down the specific issues mentioned:
 
 **Snort on Windows Troubleshooting:**
 
@@ -192,3 +223,16 @@ The `.md` file you've provided documents the process of installing and configuri
 Lets start with the installation of Debian machine, for that install theh stack machine of Debian 12 and then start with the [Configuration Entry for the `apt`](../day1/day1.md#configuration-entry-of-debian-based-linux) in order to create the configuration entry.
 
 Then, you need to install the packages such as vim, ssh, and other utilities to make the debian server working. Make sure that when you are installing a stack debian, you need to make the static configuration for the network interfaces and therefore you need to make configurations for that inside `/etc/network/interfaces`.
+
+# How to Automate the Logs
+
+- **Create a Syslog Server and Base Machine** - In order to generate the automated logs, you first are required to generate the 
+
+- **We'll be installing a Kiwi Syslog Server** - In order to install the server you need to start with server
+
+    ```
+    snort -i 3 -c C:\Snort\etc\snort.conf -l C:\Snort\log -s
+    ```
+
+- **Generate the logs** -  
+
