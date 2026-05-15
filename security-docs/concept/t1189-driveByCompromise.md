@@ -72,3 +72,11 @@ The client receives this token but does not parse it. It simply includes it in t
 
 1. Use the id_token when you need to know who the user is.
 2. Use the access_token when you need to prove what your application is allowed to do.
+
+# What if your JWT token is stolen?
+
+*It's bad, really bad*. Its as bad as your username and password getting stolen. 
+
+If attacker get hold of your JWT token, he could start sending request to the server authorising itself as you and could use protected APIs, could make changes to your account, could also update your profile.
+
+But, it is not as bad as your username and password getting stolen, becuase the technology do give some benefits as you can configure your JET token to be short lived and your JWT
