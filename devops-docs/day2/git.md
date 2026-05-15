@@ -134,3 +134,51 @@ git cat-file -p <blob-sha>
 ```
 
 The blob content is exactly what the file contained at the time it was commited. 
+
+# Git's Snapshot Model
+
+Git does not store individual file changes as diffs. Instead, every commit records a complete snapshot of your working tree at that moment.
+
+### What happens during a commit
+
+When you run git commit, Git performs these steps:
+
+1. It creates a blob object for every file whose content has changed (or is new). A blob is simply the raw file content plus a header.
+
+2. It creates a tree object for every directory whose contents have changed (including the root directory). A tree is a sorted list of entries, each pointing to either a blob (file) or another tree (subdirectory) by its object ID (SHA-1).
+
+3. Because unchanged files and directories already exist as objects in the database, Git simply reuses their existing object IDs. No new blobs or trees are written for them.
+
+4. Finally, Git creates a commit object that points to the new root tree, stores your commit message, author information, and the parent commit(s).
+
+Result: every commit object gives you the exact state of the entire project at that point in time, yet Git stores only the differences in the object graph.
+
+
+### Visualizing the object graph
+
+```
+Commit → Root Tree
+             ├── file1.txt → Blob (content)
+             ├── docs/ → Sub-tree
+             │     └── readme.md → Blob
+             └── src/ → Sub-tree (unchanged → reused)
+```
+
+### How to inspect what you actually committed
+
+Use these two commands together:
+
+```
+# See commit history with short hashes and messages
+git log --oneline
+
+# Examine exactly what changed in a specific commit
+git show <commit-id>
+```
+
+`git show` displays:
+
+- The commit metadata
+- The diff between this commit’s tree and its parent’s tree
+
+To see only the list of paths that changed, add `--name-only` or `--name-status`.
